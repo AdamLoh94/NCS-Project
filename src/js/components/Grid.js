@@ -72,8 +72,8 @@ var tilesData = [
 ];
 
 export default class Grid extends React.Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       like: false,
       likes: tilesData.likes,
