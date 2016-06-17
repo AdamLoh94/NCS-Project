@@ -5,7 +5,7 @@ import Grid from "./Grid";
 export default class Layout extends React.Component {
 	constructor1
 	render(){
-		return (
+		return(
 			<div>
 				<Userid />
 				<Grid />

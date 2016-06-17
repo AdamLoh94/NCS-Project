@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import {GridList, GridTile} from 'material-ui/GridList';
 import Subheader from 'material-ui/Subheader';
@@ -7,6 +6,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import IconButton from 'material-ui/IconButton';
 
 const thumbsIcon = "glyphicon glyphicon-thumbs-up";
+var likeValue = 0;
 
 const styles = {
   root: {
@@ -23,19 +23,19 @@ const styles = {
 var tilesData = [
   {
     img: './images/image_01.jpg',
-    title: 'Breakfast',
+    title: 'Dessert',
     likes: 0,
     icon: './images/icons/icon_1.png',
   },
   {
     img: './images/image_02.jpg',
-    title: 'Tasty burger',
+    title: 'Cereal',
     likes: 0,
     icon: './images/icons/icon_1.png',
   },
   {
     img: './images/image_03.jpg',
-    title: 'Camera',
+    title: 'Chickpeas',
     likes: 0,
     icon: './images/icons/icon_1.png',
   },
@@ -47,25 +47,25 @@ var tilesData = [
   },
   {
     img: './images/image_05.jpg',
-    title: 'Hats',
+    title: 'Christmas',
     likes: 0,
     icon: './images/icons/icon_1.png',
   },
   {
     img: './images/image_06.jpg',
-    title: 'Honey',
+    title: 'Italian',
     likes: 0,
     icon: './images/icons/icon_1.png',
   },
   {
     img: './images/image_07.jpg',
-    title: 'Vegetables',
+    title: 'Sandwich',
     likes: 0,
     icon: './images/icons/icon_1.png',
   },
   {
     img: './images/image_08.jpg',
-    title: 'Water plant',
+    title: 'Snacks',
     likes: 0,
     icon: './images/icons/icon_1.png',
   },
@@ -78,24 +78,6 @@ export default class Grid extends React.Component {
       like: false,
       likes: tilesData.likes,
     };
-    this.post = this.post.bind(this);
-    this.delete = this.delete.bind(this);
-  }
-
-  post(){
-      this.setState({ like: true});
-      let likes = this.state.likes;
-      likes++;
-      this.setState({likes: likes});
-      //this.tilesData.likes = likes;
-  }
-
-  delete(){
-      this.setState({ like: false});
-      let likes = this.state.likes;
-      likes--;
-      this.setState({likes: likes});
-      //this.tilesData.likes = likes;
   }
 
   getChildContext() {
@@ -103,27 +85,63 @@ export default class Grid extends React.Component {
   }
 
   render(){
-    const likeBtn = this.state.like ? <img src="./images/icons/icon_2.png" onClick={this.delete} /> : <img src="./images/icons/icon_1.png" onClick={this.post} />;
-    return (
+      return (
       <div style={styles.root}>
         <GridList
           cellHeight={200}
           cols={4}
           style={styles.gridList}
         >
-        <Subheader>December</Subheader>
+        <Subheader>Meals</Subheader>
         {tilesData.map((tile) => (
-          <GridTile
+          <GridTileInternal
             key={tile.img}
+            img={tile.img}
             title={tile.title}
-            subtitle={<span>Likes: <b>{tile.likes}</b></span>}
-            actionIcon={likeBtn}
+            //subtitle={tile.likes}
           >
-            <img src={tile.img} />
-          </GridTile>
+          </GridTileInternal>
           ))}
         </GridList>
       </div>
+    );
+  }
+}
+
+class GridTileInternal extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      like: false,
+      likes: tilesData.likes,
+    };
+    this.post = this.post.bind(this);
+    this.delete = this.delete.bind(this);
+  }
+
+  post(){
+      this.setState({ like: true});
+      likeValue += 1;
+  }
+
+  delete(){
+      this.setState({ like: false});
+      likeValue -= 1;
+  }
+
+
+  render(){
+    const likeBtn = this.state.like ? <img src="./images/icons/icon_2.png" onClick={this.delete} /> : <img src="./images/icons/icon_1.png" onClick={this.post} />;
+    const tempValue = likeValue;
+    return (
+          <GridTile
+            key={this.props.img}
+            title={this.props.title}
+            subtitle={<span>Likes: <b>{tempValue}</b></span>}
+            actionIcon={likeBtn}
+          >
+            <img src={this.props.img} />
+          </GridTile>
     );
   }
 }
